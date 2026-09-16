@@ -38,13 +38,12 @@ export async function renameBrandAction(fd: FormData): Promise<BrandFormState> {
   return null;
 }
 
-export async function deleteBrandAction(fd: FormData): Promise<BrandFormState> {
+export async function deleteBrandAction(
+  _prev: BrandFormState,
+  fd: FormData,
+): Promise<BrandFormState> {
   const name = z.string().trim().min(1).safeParse(fd.get('name'));
   if (!name.success) return { error: 'Invalid brand' };
-  const count = await getBrandItemCount(name.data);
-  if (count > 0) {
-    // caller must confirm; if they send the action anyway we trust it
-  }
   await deleteBrand(name.data);
   revalidatePath('/admin/brands');
   revalidatePath('/admin/inventory');
