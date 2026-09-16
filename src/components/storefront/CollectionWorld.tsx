@@ -24,7 +24,7 @@ export default function CollectionWorld({
           {collection.blurb && <p className="world-p">{collection.blurb}</p>}
         </Reveal>
 
-        <Reveal className="rack">
+        <Reveal className="rack rack-home">
           {collection.items.map((item) => (
             <ProductTile key={item.id} item={item} />
           ))}
