@@ -84,8 +84,8 @@ export default function ProductTile({ item }: { item: ItemWithRelations }) {
           className="tile-ask"
           onClick={() => {
             // write before scrolling so the form's IntersectionObserver sees them
-            (window as Record<string, unknown>).__mvb_item_id = item.id;
-            (window as Record<string, unknown>).__mvb_item_name = item.name;
+            (window as unknown as Record<string, unknown>).__mvb_item_id = item.id;
+            (window as unknown as Record<string, unknown>).__mvb_item_name = item.name;
             const msg = document.getElementById('f-msg') as HTMLTextAreaElement | null;
             if (msg) msg.value = `I am interested in: ${item.name}`;
             document.getElementById('enquire')?.scrollIntoView({ behavior: 'smooth' });
