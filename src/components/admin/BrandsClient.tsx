@@ -124,7 +124,7 @@ function BrandRow({ brand }: { brand: Brand }) {
 
 function DeleteBrandButton({ brand }: { brand: Brand }) {
   const [, deleteAction, pending] = useActionState<BrandFormState, FormData>(
-    deleteBrandAction,
+    async (prev, fd) => deleteBrandAction(prev, fd),
     null,
   );
 
