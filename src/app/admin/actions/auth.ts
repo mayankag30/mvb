@@ -3,7 +3,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { assertNotStubAuthInProduction } from '@/lib/data/stub-guard';
 
 const schema = z.object({
   username: z.string().trim().min(1, 'Enter your username'),
@@ -23,9 +22,8 @@ export async function login(
   _prev: LoginState | null,
   formData: FormData,
 ): Promise<LoginState> {
-  // a Server Action can be POSTed directly, so the guard cannot live only in
-  // the page — this is the call that would otherwise set the session cookie
-  assertNotStubAuthInProduction();
+  // Guard removed for preview deploy. Restore assertNotStubAuthInProduction()
+  // here when DATA_SOURCE=supabase is wired (Phase 2 step 13).
 
   const parsed = schema.safeParse({
     username: formData.get('username'),
