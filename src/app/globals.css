@@ -110,6 +110,8 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 
 /* ---------- product tiles (mehrab arches) ---------- */
 .rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:26px;align-items:stretch}
+.rack-home{display:flex;flex-wrap:wrap;justify-content:center}
+.rack-home>.tile{flex:0 0 clamp(224px,22%,280px)}
 .tile{position:relative;display:flex;flex-direction:column}
 .tile-frame{position:relative;aspect-ratio:3/4.1;border-radius:140px 140px 4px 4px;overflow:hidden;
   border:1px solid rgba(217,169,60,.45);box-shadow:inset 0 0 0 5px rgba(20,15,46,.55);transition:box-shadow .45s,transform .45s}
@@ -406,6 +408,7 @@ footer{background:#0B0718;padding:44px 0;border-top:1px solid rgba(217,169,60,.1
   .hero-acts{gap:10px}
   .btn{padding:12px 20px;font-size:13px}
   .rack{grid-template-columns:1fr;gap:20px}
+  .rack-home>.tile{flex:0 0 100%}
   .filters{padding:4px 14px 16px}
   .extras-row{grid-template-columns:1fr 1fr;gap:12px}
   .pg{min-width:36px;height:36px;padding:0 9px;font-size:12.5px}
