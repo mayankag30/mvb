@@ -32,7 +32,7 @@ export default function EnquiryForm() {
   // scrolled to again via the Intersection Observer in Nav.
   useEffect(() => {
     function sync() {
-      const w = window as Record<string, unknown>;
+      const w = window as unknown as Record<string, unknown>;
       if (itemRef.current) itemRef.current.value = String(w.__mvb_item_id ?? '');
       if (msgRef.current && w.__mvb_item_name) {
         msgRef.current.value = `I am interested in: ${w.__mvb_item_name}`;
