@@ -1,0 +1,440 @@
+{
+ "collection:lehengas": {
+  "status": 200,
+  "count": "10 of 10 pieces",
+  "n": 10,
+  "names": [
+   "Rani Bridal Lehenga",
+   "Champa Sangeet Set",
+   "Zardozi Ivory Lehenga",
+   "Midnight Velvet Lehenga",
+   "Gota Patti Haldi Lehenga",
+   "Mirror Work Garba Chaniya",
+   "Pastel Organza Lehenga",
+   "Banarasi Silk Bridal Set",
+   "Sequin Reception Lehenga",
+   "Raw Silk Mehendi Lehenga"
+  ],
+  "brands": [
+   "MVB Atelier",
+   "Neeru Couture",
+   "",
+   "MVB Atelier",
+   "Neeru Couture",
+   "",
+   "Studio Meher",
+   "Kumaran Silks",
+   "MVB Atelier",
+   ""
+  ],
+  "prices": [
+   "₹ 84,500",
+   "₹ 42,000",
+   "₹ 66,000",
+   "₹ 71,200",
+   "₹ 28,400",
+   "₹ 16,900",
+   "₹ 37,500",
+   "₹ 92,000",
+   "₹ 58,000",
+   "₹ 23,800"
+  ],
+  "stock": [
+   "Only 3 left",
+   "8 in stock",
+   "Only 2 left",
+   "5 in stock",
+   "11 in stock",
+   "14 in stock",
+   "6 in stock",
+   "Only 1 left",
+   "4 in stock",
+   "Sold out — ask us when it returns"
+  ],
+  "badges": [
+   "Bridal",
+   "Sangeet",
+   "Reception",
+   "New",
+   "Navratri",
+   "Bridal"
+  ],
+  "sold": 1
+ },
+ "collection:sarees": {
+  "status": 200,
+  "count": "10 of 10 pieces",
+  "n": 10,
+  "names": [
+   "Kanjeevaram Temple Border",
+   "Banarasi Kadhwa Silk",
+   "Hand-painted Organza",
+   "Charcoal Sequin Chiffon",
+   "Chikankari Georgette Saree",
+   "Patola Double Ikat",
+   "Tissue Linen Daily Saree",
+   "Bandhani Gharchola",
+   "Black Velvet Border Saree",
+   "Kota Doria Summer Saree"
+  ],
+  "brands": [
+   "Kumaran Silks",
+   "",
+   "Studio Meher",
+   "",
+   "Rasa",
+   "Kumaran Silks",
+   "",
+   "Neeru Couture",
+   "MVB Atelier",
+   ""
+  ],
+  "prices": [
+   "₹ 38,900",
+   "₹ 29,400",
+   "₹ 14,800",
+   "₹ 18,200",
+   "₹ 11,200",
+   "₹ 64,000",
+   "₹ 6,400",
+   "₹ 21,500",
+   "₹ 33,600",
+   "₹ 4,900"
+  ],
+  "stock": [
+   "6 in stock",
+   "9 in stock",
+   "12 in stock",
+   "Only 3 left",
+   "15 in stock",
+   "Only 2 left",
+   "22 in stock",
+   "7 in stock",
+   "Only 1 left",
+   "18 in stock"
+  ],
+  "badges": [
+   "Best seller",
+   "Party",
+   "Heirloom",
+   "Evening"
+  ],
+  "sold": 0
+ },
+ "collection:suits": {
+  "status": 200,
+  "count": "10 of 10 pieces",
+  "n": 10,
+  "names": [
+   "Lucknowi Chikankari Kurta Set",
+   "Chanderi Anarkali",
+   "Cotton Silk Sharara Set",
+   "Block-print Palazzo Suit",
+   "Silk Blend Straight Suit",
+   "Kalamkari Cotton Set",
+   "Festive Velvet Suit",
+   "Linen Co-ord Kurta Set",
+   "Afghani Salwar Set",
+   "Bandhani Cotton Suit"
+  ],
+  "brands": [
+   "",
+   "Rasa",
+   "",
+   "Neelkamal",
+   "Rasa",
+   "",
+   "Neelkamal",
+   "MVB Atelier",
+   "",
+   "Rasa"
+  ],
+  "prices": [
+   "₹ 9,600",
+   "₹ 12,400",
+   "₹ 11,100",
+   "₹ 6,900",
+   "₹ 8,400",
+   "₹ 5,600",
+   "₹ 17,800",
+   "₹ 7,200",
+   "₹ 4,800",
+   "₹ 6,200"
+  ],
+  "stock": [
+   "16 in stock",
+   "9 in stock",
+   "5 in stock",
+   "20 in stock",
+   "11 in stock",
+   "24 in stock",
+   "Only 3 left",
+   "13 in stock",
+   "Sold out — ask us when it returns",
+   "17 in stock"
+  ],
+  "badges": [
+   "Daily",
+   "Travel",
+   "Festive"
+  ],
+  "sold": 1
+ },
+ "collection:gowns": {
+  "status": 200,
+  "count": "8 of 8 pieces",
+  "n": 8,
+  "names": [
+   "Obsidian Cape Gown",
+   "Molten Gold Corset Gown",
+   "Blush Trail Indo-western",
+   "Emerald Slit Gown",
+   "Draped Saree Gown",
+   "Ruffle Georgette Gown",
+   "Sculpted Peplum Gown",
+   "Ivory Pearl Engagement Gown"
+  ],
+  "brands": [
+   "MVB Atelier",
+   "",
+   "Studio Meher",
+   "",
+   "MVB Atelier",
+   "Studio Meher",
+   "",
+   "Neeru Couture"
+  ],
+  "prices": [
+   "₹ 46,000",
+   "₹ 52,500",
+   "₹ 33,800",
+   "₹ 39,900",
+   "₹ 27,400",
+   "₹ 19,800",
+   "₹ 44,200",
+   "₹ 61,000"
+  ],
+  "stock": [
+   "Only 2 left",
+   "Only 1 left",
+   "4 in stock",
+   "Only 3 left",
+   "6 in stock",
+   "8 in stock",
+   "Only 2 left",
+   "Only 1 left"
+  ],
+  "badges": [
+   "Cocktail",
+   "Statement",
+   "New",
+   "Reception",
+   "Engagement"
+  ],
+  "sold": 0
+ },
+ "collection:extras": {
+  "status": 200,
+  "count": "16 of 16 pieces",
+  "n": 16,
+  "names": [
+   "Banarasi Organza Dupatta",
+   "Gota Patti Net Dupatta",
+   "Zari Border Silk Dupatta",
+   "Kundan Choker Set",
+   "Polki Maang Tikka",
+   "Oxidised Jhumka",
+   "Temple Work Haar",
+   "Beaded Potli Bag",
+   "Velvet Embroidered Potli",
+   "Kamarbandh Waist Belt",
+   "Saree Belt with Stones",
+   "Punjabi Embroidered Jutti",
+   "Mirror Work Mojari",
+   "Velvet Block Heel Jutti",
+   "Fresh Gajra Hair Pin",
+   "Pearl Hair Vine"
+  ],
+  "brands": [
+   "Kumaran Silks",
+   "",
+   "Kumaran Silks",
+   "Roopkala",
+   "Roopkala",
+   "",
+   "Roopkala",
+   "",
+   "Studio Meher",
+   "Roopkala",
+   "",
+   "Neelkamal",
+   "Neelkamal",
+   "",
+   "",
+   "Studio Meher"
+  ],
+  "prices": [
+   "₹ 3,400",
+   "₹ 2,200",
+   "₹ 4,800",
+   "₹ 5,600",
+   "₹ 2,900",
+   "₹ 850",
+   "₹ 8,900",
+   "₹ 1,400",
+   "₹ 2,100",
+   "₹ 3,200",
+   "₹ 1,900",
+   "₹ 1,650",
+   "₹ 1,350",
+   "₹ 2,400",
+   "₹ 450",
+   "₹ 1,800"
+  ],
+  "stock": [
+   "19 in stock",
+   "26 in stock",
+   "7 in stock",
+   "4 in stock",
+   "11 in stock",
+   "34 in stock",
+   "Only 2 left",
+   "23 in stock",
+   "9 in stock",
+   "6 in stock",
+   "14 in stock",
+   "21 in stock",
+   "Sold out — ask us when it returns",
+   "5 in stock",
+   "40 in stock",
+   "8 in stock"
+  ],
+  "badges": [
+   "Dupatta",
+   "Dupatta",
+   "Dupatta",
+   "Jewellery",
+   "Jewellery",
+   "Jewellery",
+   "Jewellery",
+   "Potli",
+   "Potli",
+   "Belt",
+   "Belt",
+   "Jutti",
+   "Jutti",
+   "Jutti",
+   "Hair",
+   "Hair"
+  ],
+  "sold": 1
+ },
+ "front": {
+  "status": 200,
+  "sections": [
+   "lehengas",
+   "sarees",
+   "suits",
+   "gowns",
+   "extras",
+   "enquire",
+   "visit"
+  ],
+  "racks": 0,
+  "tiles": 16,
+  "seeAll": [
+   "lehengas",
+   "sarees",
+   "suits",
+   "gowns",
+   "extras"
+  ],
+  "kicker": "SINCE 1978 · MANIK CHOWK, JHANSI",
+  "vlines": [
+   "ADDRESS=Chandra Shekhar Azad Road, Manik Chowk,\nJhansi, Uttar Pradesh 284002",
+   "WHATSAPP=+91 98765 43210",
+   "CALL=+91 11 2345 6789",
+   "EMAIL=hello@mvbstore.in",
+   "OPEN=Monday to Saturday, 11am – 8pm\nSunday closed"
+  ],
+  "extras": 6
+ },
+ "admin:dash": {
+  "status": 200,
+  "cards": [
+   "NEW ENQUIRIES=1",
+   "ITEMS LIVE=54",
+   "THIS WEEK=4",
+   "MOST ASKED=Lehengas",
+   "RUNNING LOW=16"
+  ],
+  "rows": 5
+ },
+ "admin:inventory": {
+  "status": 200,
+  "th": [
+   "(blank)",
+   "ITEM",
+   "COLLECTION",
+   "BASE COLOUR",
+   "OTHER COLOURS",
+   "PRICE",
+   "IN STOCK",
+   "MEDIA",
+   "ON SITE",
+   "(blank)"
+  ],
+  "rows": 54,
+  "itemsLabel": "54",
+  "noBrand": 40,
+  "low": 26,
+  "out": 6
+ },
+ "admin:enquiries": {
+  "status": 200,
+  "names": [
+   "Ritika Sharma",
+   "Fatima Khan",
+   "Meenakshi Iyer",
+   "Simran Kaur",
+   "Anjali Verma"
+  ],
+  "pills": [],
+  "week": "4"
+ },
+ "admin:shop": {
+  "status": 200,
+  "values": [
+   "name=Mahesh Vastra Bhandar",
+   "whatsapp=+91 98765 43210",
+   "phone=+91 11 2345 6789",
+   "email=hello@mvbstore.in",
+   "hours=Monday to Saturday, 11am – 8pm\nSunday closed",
+   "lat=25.461039",
+   "lng=78.579234"
+  ],
+  "textareas": [
+   "Chandra Shekhar Azad Road, Manik Chowk,\nJhansi, Uttar Pradesh 284002"
+  ]
+ },
+ "admin:newitem": {
+  "status": 200,
+  "brandOptions": [
+   "No brand",
+   "Kumaran Silks",
+   "MVB Atelier",
+   "Neelkamal",
+   "Neeru Couture",
+   "Rasa",
+   "Roopkala",
+   "Studio Meher"
+  ],
+  "collOptions": [
+   "Lehengas",
+   "Sarees",
+   "Suits",
+   "Gowns",
+   "Extras"
+  ]
+ }
+}

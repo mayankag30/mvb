@@ -1,0 +1,226 @@
+/* ============================================================
+   MVB admin
+   Ported verbatim from design-reference/admin.html.
+
+   Two mechanical changes, nothing visual:
+     1. the reference is a standalone document and styles bare element
+        selectors (body, aside, main, table, th, td, *). Here the admin is a
+        route inside one Next tree, so those are scoped under .shell /
+        .login-screen — otherwise they leak into the storefront.
+     2. --serif / --sans bind to next/font's --font-display / --font-body.
+
+   #login becomes .login-screen because the login is its own route, not a
+   hidden overlay. Do not restyle here — edit the reference and re-port.
+   ============================================================ */
+
+.shell,.login-screen{--ink:#140F2E;--ink2:#1E1740;--gold:#D9A93C;--gold-lt:#F2D98B;--rani:#C21E56;
+ --paper:#F6F3EC;--line:#DDD5C6;--txt:#2A2140;--mute:#6E6187;
+ --serif:var(--font-display),Georgia,serif;--sans:var(--font-body),system-ui,sans-serif}
+.shell *,.login-screen *{box-sizing:border-box;margin:0;padding:0}
+/* addition beyond the reference: visually-hidden labels for inputs the
+   reference leaves unlabelled. No visual effect. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.shell,.login-screen{font-family:var(--sans);font-weight:300;line-height:1.6}
+.shell{background:var(--paper);color:var(--txt)}
+.shell > main{min-width:0}
+.shell :is(button,input,select,textarea),.login-screen :is(button,input,select,textarea){font:inherit}
+.shell button,.login-screen button{cursor:pointer;border:0;background:none;color:inherit}
+.shell :focus-visible,.login-screen :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- login ---------- */
+.login-screen{position:fixed;inset:0;z-index:100;display:grid;place-items:center;
+ background:radial-gradient(110% 80% at 50% 0%,#2A1F52,#140F2E 55%,#0A0718)}
+.login-screen.hide{display:none}
+.lbox{width:min(400px,92vw);background:rgba(255,255,255,.04);border:1px solid rgba(217,169,60,.35);
+ padding:38px 32px;border-radius:3px;backdrop-filter:blur(10px);text-align:center}
+.lbrand{font-family:var(--serif);font-size:30px;letter-spacing:.2em;color:var(--gold-lt)}
+.lsub{font-size:13px;color:#9E93BC;margin:6px 0 26px;letter-spacing:.06em}
+.lfield{text-align:left;margin-bottom:15px}
+.lfield label{display:block;font-size:11.5px;letter-spacing:.16em;color:var(--gold);margin-bottom:6px}
+.lfield input{width:100%;padding:11px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(217,169,60,.3);
+ border-radius:2px;color:#F6EFE2}
+.lfield input:focus{outline:none;border-color:var(--gold)}
+.login-screen .lbtn{width:100%;margin-top:10px;padding:13px;background:linear-gradient(135deg,#E8BE55,#C69326);
+ color:#1B1330;border-radius:2px;letter-spacing:.12em;font-size:14px}
+.lerr{display:none;margin-top:14px;font-size:13px;color:#FF9BB4}
+.lerr.show{display:block}
+.lhint{margin-top:20px;font-size:11.5px;color:#7E73A0;line-height:1.7}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+.shell > aside{background:var(--ink);color:#E6DDF2;padding:26px 0;position:sticky;top:0;height:100vh}
+.abrand{font-family:var(--serif);font-size:20px;letter-spacing:.18em;color:var(--gold-lt);padding:0 24px 22px;
+ border-bottom:1px solid rgba(217,169,60,.2)}
+.anav{padding:18px 12px;display:flex;flex-direction:column;gap:2px}
+.anav button,.anav a{text-decoration:none;display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 14px;border-radius:2px;
+ font-size:14.5px;color:#BDB2D6;transition:background .2s,color .2s}
+.shell .anav button:hover,.shell .anav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.anav button.on,.anav a.on,.shell .anav a.on{background:rgba(217,169,60,.14);color:var(--gold-lt);box-shadow:inset 2px 0 0 var(--gold)}
+.anav .ic{width:18px;text-align:center;opacity:.9}
+.aout{position:absolute;bottom:22px;left:12px;right:12px}
+.aout button{width:100%;padding:10px;border:1px solid rgba(255,255,255,.18);border-radius:2px;font-size:13px;color:#BDB2D6}
+.aout button:hover{border-color:var(--rani);color:#FFA8C0}
+
+.shell > main{padding:30px 34px 60px;max-width:1180px}
+.ptop{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:24px}
+.ph{font-family:var(--serif);font-size:30px;color:#1E1436}
+.psub{font-size:14px;color:var(--mute)}
+.btn{padding:10px 18px;border-radius:2px;font-size:13.5px;letter-spacing:.06em;transition:filter .25s,transform .2s}
+.shell .btn-p{background:#1E1436;color:var(--gold-lt)}
+.btn-p:hover{transform:translateY(-1px);filter:brightness(1.3)}
+.shell .btn-s{border:1px solid var(--line);color:var(--txt);background:#fff}
+.btn-s:hover{border-color:var(--gold)}
+/* the reference is a single file and toggles .page.on to switch views; here
+   each view is its own route, so the rendered page is always the active one */
+.page{display:block}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:16px;margin-bottom:30px}
+.card{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 20px}
+.card .k{font-size:11.5px;letter-spacing:.16em;color:var(--mute)}
+.card .v{font-family:var(--serif);font-size:32px;color:#1E1436;margin-top:4px;line-height:1.1}
+.card .d{font-size:12.5px;color:#8A7CA6}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+/* Correction to design-reference/admin.html, which has:
+     .panel>table{display:block;overflow-x:auto}
+     .panel>table thead,.panel>table tbody{display:table;width:100%;min-width:720px}
+   Making thead and tbody separate `display:table` boxes gives each its own
+   column sizing, so headers and cells diverge — verified misaligned in the
+   reference itself, it is just less obvious there with short demo rows.
+   Scrolling belongs on the wrapper, not the table: the table stays a real
+   table so one set of column widths applies to both. Same visual intent,
+   same min-width, same overflow behaviour. */
+.shell .panel{overflow-x:auto;overflow-y:hidden}
+.shell .panel>table{min-width:720px;white-space:nowrap}
+.ptitle{padding:15px 20px;border-bottom:1px solid var(--line);font-size:14px;letter-spacing:.1em;color:var(--mute);
+ display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:14px}
+.shell th{text-align:left;padding:12px 16px;font-weight:400;font-size:11.5px;letter-spacing:.14em;color:var(--mute);
+ background:#FAF7F0;border-bottom:1px solid var(--line)}
+.shell td{padding:13px 16px;border-bottom:1px solid #EFEAE0;vertical-align:middle}
+.shell tr:last-child td{border-bottom:0}
+.shell tbody tr:hover{background:#FCFAF5}
+.sw{width:22px;height:22px;border-radius:3px;border:1px solid rgba(0,0,0,.15);display:inline-block;vertical-align:middle}
+.sws{display:flex;gap:5px;align-items:center}
+.thumb{width:40px;height:52px;border-radius:18px 18px 2px 2px;border:1px solid var(--line)}
+.iname{font-family:var(--serif);font-size:15.5px;color:#1E1436}
+.ibrand{font-size:12px;color:#8A7CA6}
+.shell .pill{display:inline-block;padding:3px 11px;border-radius:99px;font-size:11.5px;letter-spacing:.06em;border:1px solid}
+.p-arr{background:#FDF1E0;color:#9A5F12;border-color:#EBD2AE}
+.p-con{background:#E7F0FB;color:#1F5A96;border-color:#C5DAF1}
+.p-dis{background:#F1EAFB;color:#5B3B96;border-color:#DCCDF3}
+.p-ord{background:#E6F5EC;color:#1B6B3E;border-color:#C2E5D1}
+.p-res{background:#EDEAE3;color:#5C5344;border-color:#DAD3C6}
+.p-clo{background:#FBE9EE;color:#9B1F45;border-color:#F0C9D6}
+.stk{font-size:14px}
+.stk b{font-weight:500}
+.stk.low{color:#B4451F}
+.stk.out{color:#9B1F45}
+.stk small{display:block;font-size:11px;letter-spacing:.1em;color:#A4987F}
+.shell .tog{position:relative;width:42px;height:23px;border-radius:99px;background:#D7CFC0;transition:background .25s}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;
+ transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.shell .tog[aria-pressed="true"]{background:#2E7D52}
+.tog[aria-pressed="true"]::after{transform:translateX(19px)}
+select.st{padding:6px 9px;border:1px solid var(--line);border-radius:2px;background:#fff;font-size:13px}
+.rowacts{display:flex;gap:8px}
+.lk{font-size:13px;color:#4A3A78;border-bottom:1px solid transparent}
+.lk:hover{border-bottom-color:var(--gold)}
+.lk.del:hover{color:var(--rani);border-bottom-color:var(--rani)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fbox{background:#fff;border:1px solid var(--line);border-radius:3px;padding:22px}
+.fbox h3{font-family:var(--serif);font-size:19px;color:#1E1436;margin-bottom:16px}
+.f{margin-bottom:14px}
+.f label{display:block;font-size:11.5px;letter-spacing:.14em;color:var(--mute);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:2px;background:#FFFDF8}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,169,60,.16)}
+.f textarea{resize:vertical;min-height:74px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.drop{border:1px dashed #C9BEA8;border-radius:3px;padding:24px;text-align:center;color:var(--mute);font-size:13.5px;background:#FBF8F2}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:4px 10px 4px 5px;font-size:13px}
+.chip .sw{width:16px;height:16px;border-radius:50%}
+.chip button{color:var(--mute);font-size:15px;line-height:1}
+.chip button:hover{color:var(--rani)}
+.savebar{display:flex;gap:10px;margin-top:6px}
+.note{font-size:12.5px;color:#8A7CA6;margin-top:10px}
+.empty{padding:40px;text-align:center;color:var(--mute);font-size:14px}
+/* ============ RESPONSIVE ============
+   admin is built for tablet and up: 768 · 1024 · 1280 · 1440 · 1920 · 2560 */
+
+@media(min-width:1600px){
+  .shell > main{max-width:1420px;padding:34px 40px 70px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(208px,1fr))}
+}
+@media(min-width:2000px){
+  .shell > main{max-width:1680px;padding:40px 48px 80px}
+  .shell > aside{padding:32px 0}
+  .ph{font-size:34px}
+}
+
+/* laptops and small desktops */
+@media(max-width:1280px){
+  .shell{grid-template-columns:212px 1fr}
+  .shell > main{padding:26px 26px 56px}
+}
+
+/* tablets in landscape */
+@media(max-width:1100px){
+  .shell{grid-template-columns:188px 1fr}
+  .grid2{grid-template-columns:1fr}
+  .anav button,.anav a{font-size:14px;padding:10px 12px}
+  .abrand{padding:0 16px 20px;font-size:18px}
+}
+
+/* tablets in portrait — sidebar becomes a top bar */
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .shell > aside{position:static;height:auto;padding:18px 0 14px}
+  .abrand{border-bottom:0;padding-bottom:14px}
+  .anav{flex-direction:row;overflow-x:auto;gap:6px;padding:0 12px 4px;scrollbar-width:none}
+  .anav::-webkit-scrollbar{display:none}
+  .anav button,.anav a{flex:0 0 auto;white-space:nowrap}
+  .anav button.on,.anav a.on{box-shadow:inset 0 -2px 0 var(--gold)}
+  .aout{position:static;margin:14px 12px 0}
+  .shell > main{padding:24px 20px 50px}
+  .ptop{align-items:flex-start}
+}
+
+@media(max-width:620px){
+  .f2{grid-template-columns:1fr}
+  .ph{font-size:26px}
+  .shell > main{padding:20px 16px 44px}
+}
+
+/* ============================================================
+   Additions beyond design-reference/admin.html.
+   The reference's inventory .ptitle already has "All collections" and
+   "All statuses" selects; these make them work and add the search and
+   sortable headers alongside, reusing select.st's box so they match.
+   ============================================================ */
+
+/* Edit / Delete were touching. Separate them with a rule, matching the
+   hairline used between rows. */
+.shell .rowacts{display:flex;gap:0;align-items:center;white-space:nowrap}
+.shell .rowacts > .lk{padding:2px 12px}
+.shell .rowacts > .lk:first-child{padding-left:0}
+.shell .rowacts > .lk + .lk{border-left:1px solid var(--line)}
+
+/* brand line under MVB in the sidebar, same gold as the wordmark */
+.abrand small{display:block;margin-top:7px;font-family:var(--sans);font-size:10.5px;
+  letter-spacing:.2em;color:var(--gold);opacity:.85}
+
+/* inventory toolbar: search + filters live in .ptitle */
+.shell .itools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.shell .isearch{padding:6px 10px;border:1px solid var(--line);border-radius:2px;background:#fff;
+  font-size:13px;min-width:190px}
+.shell .isearch:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,169,60,.16)}
+
+/* sortable column headers */
+.shell th .sortbtn{display:inline-flex;align-items:center;gap:6px;font:inherit;letter-spacing:inherit;
+  color:inherit;text-transform:inherit}
+.shell th .sortbtn:hover{color:var(--txt)}
+.shell th .sortbtn .car{font-size:9px;opacity:.35}
+.shell th[aria-sort] .sortbtn{color:var(--txt)}
+.shell th[aria-sort] .sortbtn .car{opacity:1;color:var(--gold)}

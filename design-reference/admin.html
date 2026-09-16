@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mahesh Vastra Bhandar — Staff panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#140F2E;--ink2:#1E1740;--gold:#D9A93C;--gold-lt:#F2D98B;--rani:#C21E56;
+ --paper:#F6F3EC;--line:#DDD5C6;--txt:#2A2140;--mute:#6E6187;
+ --serif:'Marcellus',Georgia,serif;--sans:'Jost',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);font-weight:300;background:var(--paper);color:var(--txt);line-height:1.6}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- login ---------- */
+#login{position:fixed;inset:0;z-index:100;display:grid;place-items:center;
+ background:radial-gradient(110% 80% at 50% 0%,#2A1F52,#140F2E 55%,#0A0718)}
+#login.hide{display:none}
+.lbox{width:min(400px,92vw);background:rgba(255,255,255,.04);border:1px solid rgba(217,169,60,.35);
+ padding:38px 32px;border-radius:3px;backdrop-filter:blur(10px);text-align:center}
+.lbrand{font-family:var(--serif);font-size:30px;letter-spacing:.2em;color:var(--gold-lt)}
+.lsub{font-size:13px;color:#9E93BC;margin:6px 0 26px;letter-spacing:.06em}
+.lfield{text-align:left;margin-bottom:15px}
+.lfield label{display:block;font-size:11.5px;letter-spacing:.16em;color:var(--gold);margin-bottom:6px}
+.lfield input{width:100%;padding:11px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(217,169,60,.3);
+ border-radius:2px;color:#F6EFE2}
+.lfield input:focus{outline:none;border-color:var(--gold)}
+.lbtn{width:100%;margin-top:10px;padding:13px;background:linear-gradient(135deg,#E8BE55,#C69326);
+ color:#1B1330;border-radius:2px;letter-spacing:.12em;font-size:14px}
+.lerr{display:none;margin-top:14px;font-size:13px;color:#FF9BB4}
+.lerr.show{display:block}
+.lhint{margin-top:20px;font-size:11.5px;color:#7E73A0;line-height:1.7}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+aside{background:var(--ink);color:#E6DDF2;padding:26px 0;position:sticky;top:0;height:100vh}
+.abrand{font-family:var(--serif);font-size:20px;letter-spacing:.18em;color:var(--gold-lt);padding:0 24px 22px;
+ border-bottom:1px solid rgba(217,169,60,.2)}
+.anav{padding:18px 12px;display:flex;flex-direction:column;gap:2px}
+.anav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 14px;border-radius:2px;
+ font-size:14.5px;color:#BDB2D6;transition:background .2s,color .2s}
+.anav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.anav button.on{background:rgba(217,169,60,.14);color:var(--gold-lt);box-shadow:inset 2px 0 0 var(--gold)}
+.anav .ic{width:18px;text-align:center;opacity:.9}
+.aout{position:absolute;bottom:22px;left:12px;right:12px}
+.aout button{width:100%;padding:10px;border:1px solid rgba(255,255,255,.18);border-radius:2px;font-size:13px;color:#BDB2D6}
+.aout button:hover{border-color:var(--rani);color:#FFA8C0}
+
+main{padding:30px 34px 60px;max-width:1180px}
+.ptop{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:24px}
+.ph{font-family:var(--serif);font-size:30px;color:#1E1436}
+.psub{font-size:14px;color:var(--mute)}
+.btn{padding:10px 18px;border-radius:2px;font-size:13.5px;letter-spacing:.06em;transition:filter .25s,transform .2s}
+.btn-p{background:#1E1436;color:var(--gold-lt)}
+.btn-p:hover{transform:translateY(-1px);filter:brightness(1.3)}
+.btn-s{border:1px solid var(--line);color:var(--txt);background:#fff}
+.btn-s:hover{border-color:var(--gold)}
+.page{display:none}.page.on{display:block}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:16px;margin-bottom:30px}
+.card{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 20px}
+.card .k{font-size:11.5px;letter-spacing:.16em;color:var(--mute)}
+.card .v{font-family:var(--serif);font-size:32px;color:#1E1436;margin-top:4px;line-height:1.1}
+.card .d{font-size:12.5px;color:#8A7CA6}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.panel>table{display:block;overflow-x:auto;white-space:nowrap}
+.panel>table thead,.panel>table tbody{display:table;width:100%;min-width:720px}
+.ptitle{padding:15px 20px;border-bottom:1px solid var(--line);font-size:14px;letter-spacing:.1em;color:var(--mute);
+ display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:12px 16px;font-weight:400;font-size:11.5px;letter-spacing:.14em;color:var(--mute);
+ background:#FAF7F0;border-bottom:1px solid var(--line)}
+td{padding:13px 16px;border-bottom:1px solid #EFEAE0;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#FCFAF5}
+.sw{width:22px;height:22px;border-radius:3px;border:1px solid rgba(0,0,0,.15);display:inline-block;vertical-align:middle}
+.sws{display:flex;gap:5px;align-items:center}
+.thumb{width:40px;height:52px;border-radius:18px 18px 2px 2px;border:1px solid var(--line)}
+.iname{font-family:var(--serif);font-size:15.5px;color:#1E1436}
+.ibrand{font-size:12px;color:#8A7CA6}
+.pill{display:inline-block;padding:3px 11px;border-radius:99px;font-size:11.5px;letter-spacing:.06em;border:1px solid}
+.p-arr{background:#FDF1E0;color:#9A5F12;border-color:#EBD2AE}
+.p-con{background:#E7F0FB;color:#1F5A96;border-color:#C5DAF1}
+.p-dis{background:#F1EAFB;color:#5B3B96;border-color:#DCCDF3}
+.p-ord{background:#E6F5EC;color:#1B6B3E;border-color:#C2E5D1}
+.p-res{background:#EDEAE3;color:#5C5344;border-color:#DAD3C6}
+.p-clo{background:#FBE9EE;color:#9B1F45;border-color:#F0C9D6}
+.stk{font-size:14px}
+.stk b{font-weight:500}
+.stk.low{color:#B4451F}
+.stk.out{color:#9B1F45}
+.stk small{display:block;font-size:11px;letter-spacing:.1em;color:#A4987F}
+.tog{position:relative;width:42px;height:23px;border-radius:99px;background:#D7CFC0;transition:background .25s}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;
+ transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.tog[aria-pressed="true"]{background:#2E7D52}
+.tog[aria-pressed="true"]::after{transform:translateX(19px)}
+select.st{padding:6px 9px;border:1px solid var(--line);border-radius:2px;background:#fff;font-size:13px}
+.rowacts{display:flex;gap:8px}
+.lk{font-size:13px;color:#4A3A78;border-bottom:1px solid transparent}
+.lk:hover{border-bottom-color:var(--gold)}
+.lk.del:hover{color:var(--rani);border-bottom-color:var(--rani)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fbox{background:#fff;border:1px solid var(--line);border-radius:3px;padding:22px}
+.fbox h3{font-family:var(--serif);font-size:19px;color:#1E1436;margin-bottom:16px}
+.f{margin-bottom:14px}
+.f label{display:block;font-size:11.5px;letter-spacing:.14em;color:var(--mute);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:2px;background:#FFFDF8}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,169,60,.16)}
+.f textarea{resize:vertical;min-height:74px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.drop{border:1px dashed #C9BEA8;border-radius:3px;padding:24px;text-align:center;color:var(--mute);font-size:13.5px;background:#FBF8F2}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:4px 10px 4px 5px;font-size:13px}
+.chip .sw{width:16px;height:16px;border-radius:50%}
+.chip button{color:var(--mute);font-size:15px;line-height:1}
+.chip button:hover{color:var(--rani)}
+.savebar{display:flex;gap:10px;margin-top:6px}
+.note{font-size:12.5px;color:#8A7CA6;margin-top:10px}
+.empty{padding:40px;text-align:center;color:var(--mute);font-size:14px}
+/* ============ RESPONSIVE ============
+   admin is built for tablet and up: 768 · 1024 · 1280 · 1440 · 1920 · 2560 */
+
+@media(min-width:1600px){
+  main{max-width:1420px;padding:34px 40px 70px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(208px,1fr))}
+}
+@media(min-width:2000px){
+  main{max-width:1680px;padding:40px 48px 80px}
+  aside{padding:32px 0}
+  .ph{font-size:34px}
+}
+
+/* laptops and small desktops */
+@media(max-width:1280px){
+  .shell{grid-template-columns:212px 1fr}
+  main{padding:26px 26px 56px}
+}
+
+/* tablets in landscape */
+@media(max-width:1100px){
+  .shell{grid-template-columns:188px 1fr}
+  .grid2{grid-template-columns:1fr}
+  .anav button{font-size:14px;padding:10px 12px}
+  .abrand{padding:0 16px 20px;font-size:18px}
+}
+
+/* tablets in portrait — sidebar becomes a top bar */
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  aside{position:static;height:auto;padding:18px 0 14px}
+  .abrand{border-bottom:0;padding-bottom:14px}
+  .anav{flex-direction:row;overflow-x:auto;gap:6px;padding:0 12px 4px;scrollbar-width:none}
+  .anav::-webkit-scrollbar{display:none}
+  .anav button{flex:0 0 auto;white-space:nowrap}
+  .anav button.on{box-shadow:inset 0 -2px 0 var(--gold)}
+  .aout{position:static;margin:14px 12px 0}
+  main{padding:24px 20px 50px}
+  .ptop{align-items:flex-start}
+}
+
+@media(max-width:620px){
+  .f2{grid-template-columns:1fr}
+  .ph{font-size:26px}
+  main{padding:20px 16px 44px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login">
+  <form class="lbox" id="loginForm">
+    <div class="lbrand">MVB</div>
+    <p class="lsub">Staff panel</p>
+    <div class="lfield"><label for="u">USERNAME</label><input id="u" autocomplete="username" required></div>
+    <div class="lfield"><label for="p">PASSWORD</label><input id="p" type="password" autocomplete="current-password" required></div>
+    <button class="lbtn" type="button" id="signin">Sign in</button>
+    <p class="lerr" id="lerr">Username or password is incorrect. 4 attempts left.</p>
+    <p class="lhint">Design preview — type anything, or <button type="button" id="skip" style="color:var(--gold-lt);border-bottom:1px solid var(--gold)">open the dashboard directly</button>.<br>The real build checks a hashed password and locks out after repeated failures.</p>
+  </form>
+</div>
+
+<!-- ================= SHELL ================= -->
+<div class="shell">
+  <aside>
+    <div class="abrand">MVB</div>
+    <nav class="anav" id="anav">
+      <button class="on" data-p="dash"><span class="ic">◧</span>Dashboard</button>
+      <button data-p="inv"><span class="ic">◈</span>Inventory</button>
+      <button data-p="add"><span class="ic">＋</span>Add an item</button>
+      <button data-p="brands"><span class="ic">◆</span>Brands</button>
+      <button data-p="enq"><span class="ic">✉</span>Enquiries</button>
+      <button data-p="shop"><span class="ic">⌖</span>Shop details</button>
+      <button data-p="users"><span class="ic">⚿</span>Staff accounts</button>
+    </nav>
+    <div class="aout"><button onclick="location.reload()">Sign out</button></div>
+  </aside>
+
+  <main>
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="page on" id="p-dash">
+      <div class="ptop"><div><h1 class="ph">Good morning, Priya</h1><p class="psub">Wednesday, 16 September 2026</p></div></div>
+      <div class="cards">
+        <div class="card"><p class="k">NEW ENQUIRIES</p><p class="v">7</p><p class="d">3 not yet contacted</p></div>
+        <div class="card"><p class="k">ITEMS LIVE</p><p class="v">126</p><p class="d">18 hidden from site</p></div>
+        <div class="card"><p class="k">THIS WEEK</p><p class="v">31</p><p class="d">enquiries received</p></div>
+        <div class="card"><p class="k">MOST ASKED</p><p class="v">Lehenga</p><p class="d">14 of 31 enquiries</p></div>
+        <div class="card"><p class="k">RUNNING LOW</p><p class="v">9</p><p class="d">3 or fewer left · 2 sold out</p></div>
+      </div>
+      <div class="panel">
+        <div class="ptitle"><span>LATEST ENQUIRIES</span><button class="lk" data-goto="enq">See all</button></div>
+        <table>
+          <thead><tr><th>NAME</th><th>WHATSAPP</th><th>LOOKING FOR</th><th>RECEIVED</th><th>STATUS</th></tr></thead>
+          <tbody id="dashRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- INVENTORY ---------- -->
+    <section class="page" id="p-inv">
+      <div class="ptop">
+        <div><h1 class="ph">Inventory</h1><p class="psub">Turn the toggle off to hide an item from the website without deleting it.</p></div>
+        <button class="btn btn-p" data-goto="add">Add an item</button>
+      </div>
+      <div class="panel">
+        <div class="ptitle">
+          <span>126 ITEMS</span>
+          <span style="display:flex;gap:8px">
+            <select class="st"><option>All collections</option><option>Lehengas</option><option>Sarees</option><option>Suits</option><option>Gowns</option><option>Extras</option></select>
+            <select class="st"><option>All statuses</option><option>Visible</option><option>Hidden</option></select>
+          </span>
+        </div>
+        <table>
+          <thead><tr><th></th><th>ITEM</th><th>COLLECTION</th><th>BASE COLOUR</th><th>OTHER COLOURS</th><th>PRICE</th><th>IN STOCK</th><th>MEDIA</th><th>ON SITE</th><th></th></tr></thead>
+          <tbody id="invRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- ADD ITEM ---------- -->
+    <section class="page" id="p-add">
+      <div class="ptop"><div><h1 class="ph">Add an item</h1><p class="psub">It appears on the website as soon as you save it with “Show on website” on.</p></div></div>
+      <div class="grid2">
+        <div class="fbox">
+          <h3>Item details</h3>
+          <div class="f"><label>ITEM NAME</label><input placeholder="Rani Bridal Lehenga"></div>
+          <div class="f2">
+            <div class="f"><label>BRAND</label><select id="brandSelect"></select></div>
+            <div class="f"><label>COLLECTION</label><select><option>Lehengas</option><option>Sarees</option><option>Suits</option><option>Gowns</option><option>Extras</option></select></div>
+          </div>
+          <div class="f2">
+            <div class="f"><label>BASE PRICE (₹)</label><input type="number" placeholder="84500"></div>
+            <div class="f"><label>PIECES IN STOCK</label><input type="number" min="0" value="1"></div>
+          </div>
+          <div class="f2">
+            <div class="f"><label>BADGE (OPTIONAL)</label><input placeholder="Bridal, New, Best seller"></div>
+            <div class="f"><label>LOW STOCK WARNING AT</label><input type="number" min="0" value="3"></div>
+          </div>
+          <div class="f"><label>BASE COLOUR</label><input type="color" value="#9E1039" style="height:44px;padding:4px"></div>
+          <div class="f"><label>OTHER COLOURS AVAILABLE (OPTIONAL)</label>
+            <div class="chips">
+              <span class="chip"><span class="sw" style="background:#C21E56"></span>Rani<button aria-label="Remove">×</button></span>
+              <span class="chip"><span class="sw" style="background:#7A0F2B"></span>Maroon<button aria-label="Remove">×</button></span>
+              <span class="chip"><span class="sw" style="background:#E0A73C"></span>Gold<button aria-label="Remove">×</button></span>
+              <button class="btn btn-s" style="padding:5px 12px;font-size:12.5px">Add colour</button>
+            </div>
+          </div>
+          <div class="f"><label>DESCRIPTION</label><textarea placeholder="Fabric, work, blouse details, occasion."></textarea></div>
+        </div>
+        <div class="fbox">
+          <h3>Photos and video</h3>
+          <div class="drop">Drag photos here, or click to choose<br><span style="font-size:12px">JPG or PNG · first photo becomes the cover</span></div>
+          <div class="drop" style="margin-top:12px">Add a short video<br><span style="font-size:12px">MP4 · up to 30 seconds</span></div>
+          <p class="note">Files are resized and stored in the media bucket; only the link is saved in the database.</p>
+          <div class="f" style="margin-top:22px;display:flex;align-items:center;justify-content:space-between">
+            <label style="margin:0">SHOW ON WEBSITE</label>
+            <button class="tog" aria-pressed="true" aria-label="Show on website"></button>
+          </div>
+          <div class="savebar"><button class="btn btn-p">Save item</button><button class="btn btn-s">Save as hidden</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- BRANDS ---------- -->
+    <section class="page" id="p-brands">
+      <div class="ptop"><div><h1 class="ph">Brands</h1>
+        <p class="psub">Rename a brand and every item using it updates. Deleting one leaves its items unbranded — it never removes stock.</p></div></div>
+      <div class="grid2">
+        <div class="panel">
+          <div class="ptitle"><span id="brandCount"></span></div>
+          <table>
+            <thead><tr><th>BRAND</th><th>ITEMS</th><th></th></tr></thead>
+            <tbody id="brandRows"></tbody>
+          </table>
+        </div>
+        <div class="fbox">
+          <h3>Add a brand</h3>
+          <div class="f"><label>BRAND NAME</label><input placeholder="Kumaran Silks"></div>
+          <div class="savebar"><button class="btn btn-p">Add brand</button></div>
+          <p class="note">An item does not need a brand. Leave it as “No brand” for pieces stitched in-house or bought unbranded — those still appear everywhere on the website, just without a brand line.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ENQUIRIES ---------- -->
+    <section class="page" id="p-enq">
+      <div class="ptop">
+        <div><h1 class="ph">Enquiries</h1><p class="psub">Every enquiry starts at Arrived. Move it along as you speak to the customer.</p></div>
+        <button class="btn btn-s">Export as CSV</button>
+      </div>
+      <div class="panel">
+        <div class="ptitle">
+          <span>31 THIS WEEK</span>
+          <select class="st"><option>All statuses</option><option>Arrived</option><option>Contacted</option><option>In discussion</option><option>Order placed</option><option>Resolved</option><option>Closed</option></select>
+        </div>
+        <table>
+          <thead><tr><th>CUSTOMER</th><th>CONTACT</th><th>LOOKING FOR</th><th>MESSAGE</th><th>RECEIVED</th><th>STATUS</th><th>NOTE</th></tr></thead>
+          <tbody id="enqRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- SHOP DETAILS ---------- -->
+    <section class="page" id="p-shop">
+      <div class="ptop"><div><h1 class="ph">Shop details</h1><p class="psub">These fields appear on the website’s Visit section, footer and WhatsApp button.</p></div></div>
+      <div class="grid2">
+        <div class="fbox">
+          <h3>Contact</h3>
+          <div class="f"><label>SHOP NAME</label><input value="Mahesh Vastra Bhandar"></div>
+          <div class="f"><label>ADDRESS</label><textarea>Chandra Shekhar Azad Road, Manik Chowk, Jhansi, Uttar Pradesh 284002</textarea></div>
+          <div class="f2">
+            <div class="f"><label>WHATSAPP NUMBER</label><input value="+91 98765 43210"></div>
+            <div class="f"><label>PHONE</label><input value="+91 11 2345 6789"></div>
+          </div>
+          <div class="f"><label>EMAIL</label><input value="hello@mvbstore.in"></div>
+          <div class="f"><label>OPENING HOURS</label><input value="Mon–Sat, 11am – 8pm · Sunday closed"></div>
+          <div class="savebar"><button class="btn btn-p">Save changes</button></div>
+        </div>
+        <div class="fbox">
+          <h3>Map location</h3>
+          <div class="f2">
+            <div class="f"><label>LATITUDE</label><input value="25.461039"></div>
+            <div class="f"><label>LONGITUDE</label><input value="78.579234"></div>
+          </div>
+          <div style="border:1px solid var(--line);border-radius:3px;overflow:hidden;height:250px">
+            <iframe title="Store location" style="width:100%;height:100%;border:0"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=78.5722%2C25.4560%2C78.5862%2C25.4660&layer=mapnik&marker=25.461039%2C78.579234"></iframe>
+          </div>
+          <p class="note">Drag the pin or paste coordinates. The website map updates on save.</p>
+          <div class="savebar" style="margin-top:14px"><button class="btn btn-p">Save location</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- STAFF ---------- -->
+    <section class="page" id="p-users">
+      <div class="ptop"><div><h1 class="ph">Staff accounts</h1><p class="psub">Two accounts can sign in to this panel. Passwords are stored hashed and cannot be read back.</p></div></div>
+      <div class="panel" style="margin-bottom:20px">
+        <table>
+          <thead><tr><th>USERNAME</th><th>NAME</th><th>LAST SIGNED IN</th><th>STATUS</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>priya</td><td>Priya Malhotra</td><td>Today, 9:12 am</td><td><span class="pill p-ord">Active</span></td><td><button class="lk">Change password</button></td></tr>
+            <tr><td>rohit</td><td>Rohit Verma</td><td>12 Sep, 6:40 pm</td><td><span class="pill p-ord">Active</span></td><td><button class="lk">Change password</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fbox" style="max-width:520px">
+        <h3>Change your password</h3>
+        <div class="f"><label>CURRENT PASSWORD</label><input type="password"></div>
+        <div class="f"><label>NEW PASSWORD</label><input type="password" placeholder="At least 12 characters"></div>
+        <div class="f"><label>CONFIRM NEW PASSWORD</label><input type="password"></div>
+        <div class="savebar"><button class="btn btn-p">Update password</button></div>
+        <p class="note">Signing in from a new device will end your other sessions.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* login is a design preview only — no real check happens here */
+const openPanel=()=>document.getElementById('login').classList.add('hide');
+document.getElementById('signin').addEventListener('click',openPanel);
+document.getElementById('skip').addEventListener('click',openPanel);
+document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();openPanel();});
+document.getElementById('p').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();openPanel();}});
+
+/* page switching */
+const nav=document.getElementById('anav');
+function go(p){
+  document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  scrollTo({top:0,behavior:'smooth'});
+}
+nav.addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(b)go(b.dataset.p)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if(b)go(b.dataset.goto)});
+
+/* ---------- demo data ---------- */
+const ENQ=[
+ {n:'Meera Sharma',w:'+91 98110 22334',e:'meera@mail.com',i:'Lehenga',m:'Sister’s wedding in November, budget around 80k.',t:'Today, 10:24 am',s:'arr'},
+ {n:'Kavita Nair',w:'+91 99870 45512',e:'kavita.n@mail.com',i:'Saree',m:'Interested in the Kanjeevaram temple border, any teal?',t:'Today, 9:02 am',s:'con'},
+ {n:'Shweta Bansal',w:'+91 97112 88090',e:'—',i:'Gown',m:'Wants the Obsidian Cape Gown in size M.',t:'Yesterday, 7:45 pm',s:'dis'},
+ {n:'Rukhsana Begum',w:'+91 90045 71120',e:'rukh@mail.com',i:'Suit',m:'Three chikankari sets for Eid, can you courier to Lucknow?',t:'Yesterday, 4:10 pm',s:'ord'},
+ {n:'Anita Deshpande',w:'+91 98220 34456',e:'anita.d@mail.com',i:'Still deciding',m:'Visiting Delhi next week, would like to come to the store.',t:'14 Sep, 1:33 pm',s:'res'},
+ {n:'Fatima Sheikh',w:'+91 93333 10002',e:'—',i:'Dupatta',m:'Looking for an organza dupatta in blush.',t:'13 Sep, 11:08 am',s:'clo'}
+];
+const LABEL={arr:['Arrived','p-arr'],con:['Contacted','p-con'],dis:['In discussion','p-dis'],
+ ord:['Order placed','p-ord'],res:['Resolved','p-res'],clo:['Closed','p-clo']};
+const OPTS=Object.entries(LABEL).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+
+document.getElementById('dashRows').innerHTML=ENQ.slice(0,5).map(q=>`
+ <tr><td><span class="iname" style="font-size:15px">${q.n}</span></td><td>${q.w}</td><td>${q.i}</td><td>${q.t}</td>
+ <td><span class="pill ${LABEL[q.s][1]}">${LABEL[q.s][0]}</span></td></tr>`).join('');
+
+document.getElementById('enqRows').innerHTML=ENQ.map((q,i)=>`
+ <tr>
+  <td><span class="iname" style="font-size:15px">${q.n}</span><br><span class="ibrand">${q.e}</span></td>
+  <td>${q.w}</td><td>${q.i}</td>
+  <td style="max-width:260px;font-size:13.5px;color:#5C5175">${q.m}</td>
+  <td style="white-space:nowrap">${q.t}</td>
+  <td><select class="st" data-i="${i}">${OPTS}</select></td>
+  <td><button class="lk">Add note</button></td>
+ </tr>`).join('');
+document.querySelectorAll('#enqRows select').forEach((s,i)=>s.value=ENQ[i].s);
+
+const INV=[
+ {stock:3,n:'Rani Bridal Lehenga',b:'MVB Atelier',c:'Lehengas',base:'#9E1039',o:['#C21E56','#7A0F2B','#E0A73C'],p:'₹ 84,500',m:'6 photos · 1 video',on:true},
+ {stock:6,n:'Kanjeevaram Temple Border',b:'Kumaran Silks',c:'Sarees',base:'#8C1C2E',o:['#0F6B62','#D9A93C','#2B2E7A'],p:'₹ 38,900',m:'4 photos',on:true},
+ {stock:2,n:'Obsidian Cape Gown',b:'MVB Atelier',c:'Gowns',base:'#141216',o:['#4A0E2C','#123B3A'],p:'₹ 46,000',m:'5 photos · 1 video',on:true},
+ {stock:16,n:'Lucknowi Chikankari Kurta Set',b:'',c:'Suits',base:'#F2EFE2',o:['#CFE0DA','#E6D2C0'],p:'₹ 9,600',m:'3 photos',on:true},
+ {stock:0,n:'Charcoal Sequin Chiffon',b:'',c:'Sarees',base:'#3A3A44',o:['#6E1F3C'],p:'₹ 18,200',m:'2 photos',on:false},
+ {stock:1,n:'Molten Gold Corset Gown',b:'',c:'Gowns',base:'#C38E2E',o:['#8E2540','#2A2A5E'],p:'₹ 52,500',m:'7 photos · 2 videos',on:true}
+];
+const BRANDS=[
+ {n:'MVB Atelier',c:6},{n:'Kumaran Silks',c:4},{n:'Neeru Couture',c:4},
+ {n:'Studio Meher',c:5},{n:'Rasa',c:3},{n:'Neelkamal',c:3},{n:'Roopkala',c:4}
+];
+const UNBRANDED=16;
+
+document.getElementById('brandCount').textContent=`${BRANDS.length} BRANDS`;
+document.getElementById('brandRows').innerHTML=
+  BRANDS.map(b=>`<tr>
+    <td><span class="iname" style="font-size:15px">${b.n}</span></td>
+    <td>${b.c}</td>
+    <td><span class="rowacts"><button class="lk">Rename</button><button class="lk del">Delete</button></span></td>
+  </tr>`).join('')+
+  `<tr>
+    <td><span class="ibrand" style="font-size:14px">No brand</span></td>
+    <td>${UNBRANDED}</td>
+    <td><span class="ibrand" style="font-size:12px">Not a brand — items with none set</span></td>
+  </tr>`;
+
+document.getElementById('brandSelect').innerHTML=
+  '<option>No brand</option>'+BRANDS.map(b=>`<option>${b.n}</option>`).join('');
+
+const stockCell=q=>q===0
+ ? '<span class="stk out"><b>0</b><small>SOLD OUT</small></span>'
+ : q<=3 ? `<span class="stk low"><b>${q}</b><small>RUNNING LOW</small></span>`
+        : `<span class="stk"><b>${q}</b></span>`;
+
+document.getElementById('invRows').innerHTML=INV.map(it=>`
+ <tr>
+  <td><div class="thumb" style="background:linear-gradient(150deg,${it.base},rgba(0,0,0,.35))"></div></td>
+  <td><span class="iname">${it.n}</span><br><span class="ibrand">${it.b||'<i style="font-style:normal;opacity:.6">No brand</i>'}</span></td>
+  <td>${it.c}</td>
+  <td><span class="sws"><span class="sw" style="background:${it.base}"></span></span></td>
+  <td><span class="sws">${it.o.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')}</span></td>
+  <td>${it.p}</td>
+  <td>${stockCell(it.stock)}</td>
+  <td style="font-size:13px;color:#7A6D95">${it.m}</td>
+  <td><button class="tog" aria-pressed="${it.on}" aria-label="Show on website"></button></td>
+  <td><span class="rowacts"><button class="lk">Edit</button><button class="lk del">Delete</button></span></td>
+ </tr>`).join('');
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.tog');
+  if(t)t.setAttribute('aria-pressed',t.getAttribute('aria-pressed')==='true'?'false':'true');
+});
+</script>
+</body>
+</html>
