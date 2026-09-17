@@ -25,10 +25,10 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === LOGIN) return NextResponse.next();
 
-  const authed =
-    process.env.DATA_SOURCE === 'supabase'
-      ? request.cookies.getAll().some((c) => c.name.startsWith('sb-'))
-      : request.cookies.get('mvb_dev_session')?.value === '1';
+  // Staff auth stays on the Phase 1 stub cookie regardless of DATA_SOURCE —
+  // DATA_SOURCE=supabase only swaps the catalogue/enquiry data layer (step 14).
+  // Real Supabase Auth (sb-* cookies) is a separate, later swap (step 15).
+  const authed = request.cookies.get('mvb_dev_session')?.value === '1';
 
   if (!authed) {
     const url = request.nextUrl.clone();
