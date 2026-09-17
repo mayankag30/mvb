@@ -63,13 +63,21 @@ async function uploadToCloudinary(file: File): Promise<{ public_id: string; url:
  */
 export default function MediaUploader({
   initial,
+  onBusyChange,
 }: {
   initial: DraftMedia[];
+  /** lets the parent form disable Save while an upload is still in flight */
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const [media, setMedia] = useState<DraftMedia[]>(initial);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusyState] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const setBusy = (value: boolean) => {
+    setBusyState(value);
+    onBusyChange?.(value);
+  };
 
   async function onPick(files: FileList | null) {
     if (!files?.length) return;
