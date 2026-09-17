@@ -47,6 +47,8 @@ export default function ItemForm({
       : [],
   );
 
+  const [mediaBusy, setMediaBusy] = useState(false);
+
   const initialMedia: DraftMedia[] =
     item?.item_media.map((m) => ({
       public_id: m.public_id,
@@ -227,7 +229,7 @@ export default function ItemForm({
         <div className="fbox">
           <h3>Photos and video</h3>
 
-          <MediaUploader initial={initialMedia} />
+          <MediaUploader initial={initialMedia} onBusyChange={setMediaBusy} />
 
           <p className="note">
             Files are resized and stored in the media bucket; only the link is
@@ -262,8 +264,8 @@ export default function ItemForm({
           )}
 
           <div className="savebar">
-            <button className="btn btn-p" type="submit" disabled={pending}>
-              {pending ? 'Saving…' : item ? 'Save changes' : 'Save item'}
+            <button className="btn btn-p" type="submit" disabled={pending || mediaBusy}>
+              {mediaBusy ? 'Uploading…' : pending ? 'Saving…' : item ? 'Save changes' : 'Save item'}
             </button>
           </div>
         </div>
