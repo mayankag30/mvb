@@ -36,9 +36,10 @@ export async function POST(request: Request) {
   const timestamp = Math.round(Date.now() / 1000);
   const paramsToSign = `folder=${folder}&timestamp=${timestamp}`;
 
+  // Cloudinary signs with SHA-1, not SHA-256 — https://cloudinary.com/documentation/signatures
   // Dynamic import keeps the crypto dep out of the client bundle
   const { createHash } = await import('crypto');
-  const signature = createHash('sha256')
+  const signature = createHash('sha1')
     .update(paramsToSign + apiSecret)
     .digest('hex');
 
