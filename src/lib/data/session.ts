@@ -16,14 +16,11 @@ const DEV_SESSION: Session = {
 export async function getSession(): Promise<Session | null> {
   // Guard removed from here for preview deploy — assertNotStubAuthInProduction()
   // is still present in stub-guard.ts as a regression test. Restore a call here
-  // (or in requireStaff) when DATA_SOURCE=supabase is wired (Phase 2 step 13).
+  // (or in requireStaff) when real Supabase Auth is wired (Phase 2 step 15).
 
-  if (process.env.DATA_SOURCE === 'supabase') {
-    const { getSupabaseSession } = await import('./session-supabase');
-    return getSupabaseSession();
-  }
-  // Phase 1: the login action sets this cookie. Without it there is no session,
-  // so the guard below actually guards.
+  // DATA_SOURCE=supabase connects the catalogue/enquiry data (step 14) but
+  // staff still sign in with the Phase 1 stub cookie until step 15 replaces
+  // this with a real Supabase Auth session — the two are independent swaps.
   const store = await cookies();
   return store.get('mvb_dev_session')?.value === '1' ? DEV_SESSION : null;
 }
