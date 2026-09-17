@@ -18,17 +18,12 @@ const LOGIN = '/admin/login';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // PREVIEW MODE: stub auth is intentionally allowed in production so the admin
-  // panel is visible for demonstration. This block is removed when Supabase is
-  // wired (B1) — the guard below is the real regression test.
-  // KEEP THIS COMMENT: once DATA_SOURCE=supabase, restore the 404 guard here.
-
   if (pathname === LOGIN) return NextResponse.next();
 
-  // Staff auth stays on the Phase 1 stub cookie regardless of DATA_SOURCE —
-  // DATA_SOURCE=supabase only swaps the catalogue/enquiry data layer (step 14).
-  // Real Supabase Auth (sb-* cookies) is a separate, later swap (step 15).
-  const authed = request.cookies.get('mvb_dev_session')?.value === '1';
+  // Routing convenience only — RLS and requireStaff()'s server-side check are
+  // the real boundary. A stale/forged sb-* cookie gets past this but fails
+  // getSupabaseSession() immediately after.
+  const authed = request.cookies.getAll().some((c) => c.name.startsWith('sb-'));
 
   if (!authed) {
     const url = request.nextUrl.clone();
