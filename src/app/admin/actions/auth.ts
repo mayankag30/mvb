@@ -1,8 +1,9 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { getServerSupabase } from '@/lib/data/supabase-server';
+import { getServiceClient } from '@/lib/data/supabase-client';
 
 const schema = z.object({
   username: z.string().trim().min(1, 'Enter your username'),
@@ -11,20 +12,30 @@ const schema = z.object({
 
 export type LoginState = { error?: string };
 
-// Phase 1 only. Phase 2 replaces this with supabase.auth.signInWithPassword —
-// no password is ever stored or compared by this application (SPEC.md §6).
-const DEV_USERS: Record<string, string> = {
-  priya: 'mvb-dev-priya-2026',
-  mahesh: 'mvb-dev-mahesh-2026',
-};
+/**
+ * Staff sign in by username, but Supabase Auth signs in by email — resolve
+ * one to the other via the staff table, using the service-role client since
+ * staff has no read policy for a caller who isn't signed in yet.
+ */
+async function emailForUsername(username: string): Promise<string | null> {
+  const client = getServiceClient();
+  const { data: staff, error: staffErr } = await client
+    .from('staff')
+    .select('id')
+    .ilike('username', username)
+    .maybeSingle();
+  if (staffErr) throw new Error(staffErr.message);
+  if (!staff) return null;
+
+  const { data, error } = await client.auth.admin.getUserById(staff.id);
+  if (error) throw new Error(error.message);
+  return data.user?.email ?? null;
+}
 
 export async function login(
   _prev: LoginState | null,
   formData: FormData,
 ): Promise<LoginState> {
-  // Guard removed for preview deploy. Restore assertNotStubAuthInProduction()
-  // here when DATA_SOURCE=supabase is wired (Phase 2 step 13).
-
   const parsed = schema.safeParse({
     username: formData.get('username'),
     password: formData.get('password'),
@@ -33,30 +44,27 @@ export async function login(
     return { error: parsed.error.issues[0].message };
   }
 
-  // Staff login stays on the Phase 1 stub cookie regardless of DATA_SOURCE —
-  // DATA_SOURCE=supabase only swaps the catalogue/enquiry data layer (step 14).
-  // Real Supabase Auth is a separate, later swap (step 15).
-  const expected = DEV_USERS[parsed.data.username.toLowerCase()];
-  if (!expected || expected !== parsed.data.password) {
+  const email = await emailForUsername(parsed.data.username);
+  if (!email) {
     // deliberately does not say which field was wrong
     return { error: 'Those details did not match. Please try again.' };
   }
 
-  const store = await cookies();
-  store.set('mvb_dev_session', '1', {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 60 * 60 * 8,
+  const supabase = await getServerSupabase();
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password: parsed.data.password,
   });
+  if (error) {
+    return { error: 'Those details did not match. Please try again.' };
+  }
 
   const next = formData.get('next');
   redirect(typeof next === 'string' && next.startsWith('/admin') ? next : '/admin');
 }
 
 export async function logout() {
-  const store = await cookies();
-  store.delete('mvb_dev_session');
+  const supabase = await getServerSupabase();
+  await supabase.auth.signOut();
   redirect('/admin/login');
 }
