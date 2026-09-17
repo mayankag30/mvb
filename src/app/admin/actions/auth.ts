@@ -33,10 +33,9 @@ export async function login(
     return { error: parsed.error.issues[0].message };
   }
 
-  if (process.env.DATA_SOURCE === 'supabase') {
-    return { error: 'Supabase auth not wired yet (Phase 2, SPEC.md step 13).' };
-  }
-
+  // Staff login stays on the Phase 1 stub cookie regardless of DATA_SOURCE —
+  // DATA_SOURCE=supabase only swaps the catalogue/enquiry data layer (step 14).
+  // Real Supabase Auth is a separate, later swap (step 15).
   const expected = DEV_USERS[parsed.data.username.toLowerCase()];
   if (!expected || expected !== parsed.data.password) {
     // deliberately does not say which field was wrong
