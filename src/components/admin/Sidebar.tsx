@@ -3,20 +3,27 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { logout } from '@/app/admin/actions/auth';
+import type { StaffRole } from '@/lib/data/types';
 
-/** .anav per design-reference/admin.html. Glyphs and labels verbatim. */
-const LINKS = [
-  { href: '/admin', ic: '◧', label: 'Dashboard' },
-  { href: '/admin/inventory', ic: '◈', label: 'Inventory' },
-  { href: '/admin/inventory/new', ic: '＋', label: 'Add an item' },
-  { href: '/admin/brands', ic: '◆', label: 'Brands' },
-  { href: '/admin/enquiries', ic: '✉', label: 'Enquiries' },
-  { href: '/admin/shop', ic: '⌖', label: 'Shop details' },
-  { href: '/admin/staff', ic: '⚿', label: 'Staff accounts' },
+const ALL_LINKS = [
+  { href: '/admin', ic: '◧', label: 'Dashboard', roles: ['super', 'editor', 'viewer'] },
+  { href: '/admin/inventory', ic: '◈', label: 'Inventory', roles: ['super', 'editor', 'viewer'] },
+  { href: '/admin/inventory/new', ic: '＋', label: 'Add an item', roles: ['super', 'editor'] },
+  { href: '/admin/brands', ic: '◆', label: 'Brands', roles: ['super', 'editor', 'viewer'] },
+  { href: '/admin/enquiries', ic: '✉', label: 'Enquiries', roles: ['super', 'editor', 'viewer'] },
+  { href: '/admin/shop', ic: '⌖', label: 'Shop details', roles: ['super'] },
+  { href: '/admin/staff', ic: '⚿', label: 'Staff accounts', roles: ['super'] },
 ];
 
-export default function Sidebar({ displayName }: { displayName: string }) {
+export default function Sidebar({
+  displayName,
+  role,
+}: {
+  displayName: string;
+  role: StaffRole;
+}) {
   const pathname = usePathname();
+  const links = ALL_LINKS.filter((l) => l.roles.includes(role));
 
   const isOn = (href: string) => {
     if (href === '/admin') return pathname === '/admin';
@@ -34,7 +41,7 @@ export default function Sidebar({ displayName }: { displayName: string }) {
       </div>
 
       <nav className="anav" id="anav" aria-label="Admin sections">
-        {LINKS.map((l) => {
+        {links.map((l) => {
           const on = isOn(l.href);
           return (
             <Link
@@ -43,9 +50,7 @@ export default function Sidebar({ displayName }: { displayName: string }) {
               className={on ? 'on' : undefined}
               aria-current={on ? 'page' : undefined}
             >
-              <span className="ic" aria-hidden="true">
-                {l.ic}
-              </span>
+              <span className="ic" aria-hidden="true">{l.ic}</span>
               {l.label}
             </Link>
           );
@@ -53,6 +58,9 @@ export default function Sidebar({ displayName }: { displayName: string }) {
       </nav>
 
       <div className="aout">
+        <span style={{ fontSize: 11, color: '#6F6490', letterSpacing: '.06em', display: 'block', marginBottom: 6 }}>
+          {role.toUpperCase()}
+        </span>
         <button
           type="button"
           onClick={() => {
