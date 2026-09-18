@@ -111,6 +111,8 @@ table{width:100%;border-collapse:collapse;font-size:14px}
 .p-dis{background:#F1EAFB;color:#5B3B96;border-color:#DCCDF3}
 .p-ord{background:#E6F5EC;color:#1B6B3E;border-color:#C2E5D1}
 .p-res{background:#EDEAE3;color:#5C5344;border-color:#DAD3C6}
+.p-pend{background:#FDF1E0;color:#9A5F12;border-color:#EBD2AE}
+.p-super{background:#F1EAFB;color:#5B3B96;border-color:#DCCDF3}
 .p-clo{background:#FBE9EE;color:#9B1F45;border-color:#F0C9D6}
 .stk{font-size:14px}
 .stk b{font-weight:500}
