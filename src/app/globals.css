@@ -156,8 +156,8 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 
 /* ---------- show more, themed per collection ---------- */
 .more-wrap{display:flex;justify-content:center;margin-top:46px}
-.more{position:relative;padding:14px 34px;border:1px solid rgba(217,169,60,.45);border-radius:2px;
-  font-size:14px;letter-spacing:.12em;color:var(--gold-lt);overflow:hidden;
+.more{position:relative;padding:14px 34px;border:1px solid rgba(217,169,60,.85);border-radius:2px;
+  font-size:14px;letter-spacing:.12em;color:#F7E4A8;background:rgba(14,10,36,.6);backdrop-filter:blur(4px);overflow:hidden;
   transition:color .35s,border-color .35s}
 .more span{position:relative;z-index:2}
 .more::before{content:'';position:absolute;inset:0;transform:translateY(101%);
