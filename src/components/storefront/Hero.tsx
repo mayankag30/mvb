@@ -7,7 +7,10 @@ export default function Hero() {
       <Loom />
 
       <div className="hero-in">
-        <p className="hero-kicker">SINCE 1978 · MANIK CHOWK, JHANSI</p>
+        <p className="hero-kicker">
+          <span className="kicker-since">卍&ensp;SINCE 1970&ensp;卍</span>
+          <span className="kicker-loc">MANIK CHOWK, JHANSI</span>
+        </p>
         <h1 className="hero-title">MVB</h1>
         <p className="hero-name">Mahesh Vastra Bhandar</p>
         <p className="hero-sub">
