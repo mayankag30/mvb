@@ -18,7 +18,7 @@ export async function getSupabaseSession(): Promise<Session | null> {
   const client = getServiceClient();
   const { data: staff, error } = await client
     .from('staff')
-    .select('display_name, is_active')
+    .select('display_name, is_active, role')
     .eq('id', user.id)
     .maybeSingle();
   if (error) throw new Error(error.message);
@@ -26,6 +26,10 @@ export async function getSupabaseSession(): Promise<Session | null> {
 
   return {
     user: { id: user.id, email: user.email ?? '' },
-    staff: { display_name: staff.display_name, is_active: staff.is_active },
+    staff: {
+      display_name: staff.display_name,
+      is_active: staff.is_active,
+      role: staff.role ?? 'viewer',
+    },
   };
 }
