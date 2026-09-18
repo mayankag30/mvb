@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { updateShopSettings } from '@/lib/data';
-import { requireStaff } from '@/lib/data/session';
+import { requireSuper } from '@/lib/data/session';
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Shop name is required').max(120),
@@ -32,7 +32,7 @@ export async function updateShopAction(
   _prev: ShopState | null,
   formData: FormData,
 ): Promise<ShopState> {
-  await requireStaff();
+  await requireSuper();
 
   const parsed = schema.safeParse({
     name: formData.get('name'),
