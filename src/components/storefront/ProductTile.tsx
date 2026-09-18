@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { fabric, fmt } from '@/lib/fabric';
 import { brandName } from '@/lib/data/brand';
 import type { ItemWithRelations } from '@/lib/data/types';
+import { cloudinaryUrl } from '@/lib/cloudinary';
 
 /** stockLine() from design-reference/index.html. */
 function stockClass(qty: number, lowAt: number) {
@@ -39,7 +40,7 @@ export default function ProductTile({ item }: { item: ItemWithRelations }) {
           {showPhoto && (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
-              src={cover.url}
+              src={cloudinaryUrl(cover.url, 480)}
               alt={item.name}
               loading="lazy"
               style={{
