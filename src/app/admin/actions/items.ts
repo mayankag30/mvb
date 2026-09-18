@@ -9,7 +9,7 @@ import {
   setItemVisibility,
   updateItem,
 } from '@/lib/data';
-import { requireStaff } from '@/lib/data/session';
+import { requireEditor } from '@/lib/data/session';
 
 const hex = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Use a 6-digit hex colour');
 
@@ -84,7 +84,7 @@ export async function createItemAction(
   _prev: ItemFormState | null,
   formData: FormData,
 ): Promise<ItemFormState> {
-  await requireStaff();
+  await requireEditor();
 
   const parsed = readForm(formData);
   if (!parsed.success) return { error: parsed.error.issues[0].message };
@@ -107,7 +107,7 @@ export async function updateItemAction(
   _prev: ItemFormState | null,
   formData: FormData,
 ): Promise<ItemFormState> {
-  await requireStaff();
+  await requireEditor();
 
   const id = formData.get('id');
   if (typeof id !== 'string' || !id) return { error: 'Missing item id' };
@@ -130,7 +130,7 @@ export async function updateItemAction(
 }
 
 export async function toggleVisibilityAction(formData: FormData) {
-  await requireStaff();
+  await requireEditor();
   const id = formData.get('id');
   const next = formData.get('next');
   if (typeof id !== 'string') return;
@@ -141,7 +141,7 @@ export async function toggleVisibilityAction(formData: FormData) {
 }
 
 export async function deleteItemAction(formData: FormData) {
-  await requireStaff();
+  await requireEditor();
   const id = formData.get('id');
   if (typeof id !== 'string') return;
 
