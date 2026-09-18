@@ -22,10 +22,13 @@ export const STATUS_LABELS: Record<EnquiryStatus, string> = {
 
 export type MediaKind = 'image' | 'video';
 
+export type StaffRole = 'super' | 'editor' | 'viewer';
+
 export type Staff = {
   id: string;
   username: string;
   display_name: string;
+  role: StaffRole;
   is_active: boolean;
   created_at: string;
 };
