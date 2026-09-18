@@ -24,9 +24,14 @@ export async function getServerSupabase() {
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options),
-          );
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            // setAll is called during Server Component renders where cookies
+            // are read-only. The session read still works; ignore the write.
+          }
         },
       },
     },
