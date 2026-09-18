@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { requireEditor } from '@/lib/data/session';
 import {
   createBrand,
   deleteBrand,
@@ -21,6 +22,7 @@ export async function createBrandAction(
   _prev: BrandFormState,
   fd: FormData,
 ): Promise<BrandFormState> {
+  await requireEditor();
   const parse = nameSchema.safeParse(fd.get('name'));
   if (!parse.success) return { error: parse.error.issues[0].message };
   await createBrand(parse.data);
@@ -29,6 +31,7 @@ export async function createBrandAction(
 }
 
 export async function renameBrandAction(fd: FormData): Promise<BrandFormState> {
+  await requireEditor();
   const oldName = z.string().trim().min(1).safeParse(fd.get('old'));
   const newName = nameSchema.safeParse(fd.get('name'));
   if (!oldName.success || !newName.success) return { error: 'Invalid name' };
@@ -42,6 +45,7 @@ export async function deleteBrandAction(
   _prev: BrandFormState,
   fd: FormData,
 ): Promise<BrandFormState> {
+  await requireEditor();
   const name = z.string().trim().min(1).safeParse(fd.get('name'));
   if (!name.success) return { error: 'Invalid brand' };
   await deleteBrand(name.data);
