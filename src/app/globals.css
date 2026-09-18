@@ -75,7 +75,9 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 @keyframes petal{0%{opacity:0;transform:translateY(-20px)}15%{opacity:.55}100%{opacity:0;transform:translateY(190px) rotate(120deg)}}
 
 .hero-in{position:relative;z-index:3;padding:0 24px;max-width:760px}
-.hero-kicker{font-size:13px;letter-spacing:.42em;color:var(--gold);opacity:0;animation:fadeUp .9s ease 2.7s forwards}
+.hero-kicker{font-size:13px;color:var(--gold);opacity:0;animation:fadeUp .9s ease 2.7s forwards;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;width:100%}
+.kicker-since{letter-spacing:.36em}
+.kicker-loc{letter-spacing:.3em;font-size:11px;opacity:.8}
 .hero-title{font-family:var(--serif);font-size:clamp(58px,13vw,152px);line-height:.92;letter-spacing:.04em;
   color:transparent;background:linear-gradient(100deg,#B98A22 0%,#F7E4A8 38%,#D9A93C 55%,#FFF4D2 70%,#B98A22 100%);
   background-size:220% 100%;-webkit-background-clip:text;background-clip:text;
