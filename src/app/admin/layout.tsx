@@ -24,7 +24,7 @@ export default async function AdminLayout({
 
   return (
     <div className="shell">
-      <Sidebar displayName={session.staff.display_name} />
+      <Sidebar displayName={session.staff.display_name} role={session.staff.role} />
       <main>{children}</main>
     </div>
   );
