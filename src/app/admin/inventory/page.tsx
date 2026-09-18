@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { listCollections, listItems } from '@/lib/data';
+import { requireStaff } from '@/lib/data/session';
 import { brandName } from '@/lib/data/brand';
 import VisibilityToggle from '@/components/admin/VisibilityToggle';
 import DeleteItemButton from '@/components/admin/DeleteItemButton';
@@ -40,6 +41,9 @@ export default async function InventoryPage({
   const visibility = one(sp.visibility);
   const sort = one(sp.sort);
   const dir: 'asc' | 'desc' = one(sp.dir) === 'desc' ? 'desc' : 'asc';
+
+  const session = await requireStaff();
+  const canEdit = session.staff.role !== 'viewer';
 
   const [allItems, collections] = await Promise.all([
     listItems(),
@@ -88,9 +92,11 @@ export default async function InventoryPage({
             deleting it.
           </p>
         </div>
-        <Link className="btn btn-p" href="/admin/inventory/new">
-          Add an item
-        </Link>
+        {canEdit && (
+          <Link className="btn btn-p" href="/admin/inventory/new">
+            Add an item
+          </Link>
+        )}
       </div>
 
       <div className="panel">
@@ -185,18 +191,23 @@ export default async function InventoryPage({
                     {item.item_media.length || '—'}
                   </td>
                   <td>
-                    <VisibilityToggle
-                      itemId={item.id}
-                      isVisible={item.is_visible}
-                    />
+                    {canEdit ? (
+                      <VisibilityToggle itemId={item.id} isVisible={item.is_visible} />
+                    ) : (
+                      <span className={`pill ${item.is_visible ? 'p-ord' : 'p-res'}`}>
+                        {item.is_visible ? 'On' : 'Off'}
+                      </span>
+                    )}
                   </td>
                   <td>
-                    <span className="rowacts">
-                      <Link className="lk" href={`/admin/inventory/${item.id}`}>
-                        Edit
-                      </Link>
-                      <DeleteItemButton itemId={item.id} itemName={item.name} />
-                    </span>
+                    {canEdit && (
+                      <span className="rowacts">
+                        <Link className="lk" href={`/admin/inventory/${item.id}`}>
+                          Edit
+                        </Link>
+                        <DeleteItemButton itemId={item.id} itemName={item.name} />
+                      </span>
+                    )}
                   </td>
                 </tr>
               );
